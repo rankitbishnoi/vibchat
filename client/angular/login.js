@@ -3,7 +3,7 @@ myapp.controller('loginCtrl', ['$http','$state',  function ($http, $state) {
      self.error = ' ';
 
 
-     self.login = function (){console.log('login');
+     self.login = function (){
           if (self.lemail === 'Email' || self.lpassword === 'password'){
                self.error = 'Please enter valid Email id and password.';
           } else {

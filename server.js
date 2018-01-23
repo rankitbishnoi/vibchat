@@ -30,7 +30,9 @@ app.use(session({
 var mongoose = require('mongoose');
 mongoose.Promise = require('bluebird');
 
-mongoose.connect("mongodb://localhost/vibchat");
+mongoose.connect("mongodb://localhost/vibchat",{
+  useMongoClient: true,
+});
 
 mongoose.connection.on('connected', () => {
      console.log('Mongoose connected to mongodb://localhost/vibchat');
@@ -52,6 +54,15 @@ process.on('SIGINT', function() {
 });
 
 //=====================================
+var server = app.listen(3000, () => {
+     console.log("listening on port 3000");
+});
+
+app.get('/', function (req, res) {
+    res.sendFile(__dirname + '/client/index.html');
+});
+
+//=====================================
 
 app.use(express.static('client'));
 
@@ -67,14 +78,4 @@ const route = require('./app/controller/user.js');
 route.controller(app);
 
 const socketInstance = require('./app/socket.js');
-socketInstance.controller(app);
-
-
-//=====================================
-app.listen(3000, () => {
-     console.log("listening on port 3000");
-});
-
-app.get('/', function (req, res) {
-    res.sendFile(__dirname + '/index.html');
-});
+socketInstance.controller(server);

@@ -33,7 +33,14 @@ myapp.controller('chatCtrl', ['user','$state','socket', function(user, $state, s
                room.msgcount = 0;
                room.status = true;
                room.typing = false;
-               users.push(room);
+
+               var i = 0;
+               self.users.forEach((user)=> {
+                    if (user === room) {
+                         i++;
+                    }
+               });
+               if (i === 0) { self.users.push(room);}
           };
           self.joinroom(room);
      });
@@ -55,7 +62,7 @@ myapp.controller('chatCtrl', ['user','$state','socket', function(user, $state, s
                     i = index;
                }
           });
-          self.users[i].msgcount = 0;
+          if (i != -1) { self.users[i].msgcount = 0;}
 
      };
 
@@ -88,7 +95,7 @@ myapp.controller('chatCtrl', ['user','$state','socket', function(user, $state, s
                          i = index;
                     }
                });
-               self.users[i].msgcount += 1;
+               if (i != -1) { self.users[i].msgcount += 1;}
           }else {
                self.chatbox.push(msg);
           }
@@ -116,7 +123,7 @@ myapp.controller('chatCtrl', ['user','$state','socket', function(user, $state, s
                     i = index;
                }
           });
-          self.users[i].typing = true;
+          if (i != -1) { self.users[i].typing = true;}
      });
 
      socket.on('user stopped', (userid) => {
@@ -126,7 +133,7 @@ myapp.controller('chatCtrl', ['user','$state','socket', function(user, $state, s
                     i = index;
                }
           });
-          self.users[i].typing = false;
+          if (i != -1) { self.users[i].typing = false;}
      });
 
      socket.on('user offline', (list) => {
@@ -143,7 +150,7 @@ myapp.controller('chatCtrl', ['user','$state','socket', function(user, $state, s
                }
           });
 
-          self.users[i].status = false;
+          if (i != -1) { self.users[i].status = false;}
           if (self.recievingUser.name === self.users[i].otheruser) {
                var msg = { msg: self.recievingUser.name + " has gone offline", sentOn: Date.now(), sentBy: " "}
                self.chatbox.push(msg);
