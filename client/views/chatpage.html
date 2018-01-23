@@ -1,0 +1,51 @@
+<section ng-controller = 'chatCtrl as chat' class="container">
+     <div class='row'>
+          <div id='users' class="col-md-3">
+               <div id='profile'>
+                    <a class="thumbnail">
+                         <img ng-src='{{chat.profileImage}}' alt="" id='profilePic'>
+                    </a>
+                    <h2 id="profilename">{{chat.profileName}}</h2>
+               </div>
+               <ul class="list-group" id="onlineUsers" ng-repeat="user in chat.users">
+                    <li class="list-group-item" ng-click="chat.chatinroom(user)">
+                         <span class="badge" ng-if="user.msgcount > 0">{{user.msgcount}}</span>
+                         {{user.otheruser}}<br>
+                         <p ng-show="user.typing">The user is typing....</p>
+                    </li>
+               </ul>
+          </div>
+          <div id='chatbox' class="col-md-9">
+               <div id='recievingUser'>
+                    <a class="thumbnail">
+                         <img ng-src='{{chat.recievingUser.image}}' alt="" id='recievingUserPic'>
+                         <span> {{chat.recievingUser.name}}</span>
+                         <span class="badge" ng-show="chat.recievingUser.status">Online</span>
+                         <span class="badge" ng-hide="chat.recievingUser.status">Offline</span>
+                    </a>
+               </div>
+               <div id="messages">
+                    <div ng-repeat="msg in chat.chatbox" class="col-sm-12 ng-scope">
+                         <div class="row" ng-if="msg">
+                              <div class="col-xs-1">
+                                   <h6>:--</h4>
+                              </div>
+                              <div class="col-xs-11">
+                                   <div class="panel panel-default ">
+                                        <div class="panel-body ng-binding "> <strong>{{msg.sentBy}}</strong> : {{msg.msg}} <br>
+                                             <span class="label label-info ng-binding ">{{msg.sentOn | date: 'h:mma'}}</span>
+                                        </div>
+                                   </div>
+                              </div>
+                         </div>
+                    </div>
+               </div>
+               <div class="input-group " id="sendbtn">
+                    <input id="data" type="text" class="form-control" ng-model="chat.msg" ng-change="chat.typing()">
+                    <span class="input-group-btn">
+                         <button class="btn btn-primary" id="datasend" type="button" ng-click="chat.sendmsg()">Send!</button>
+                    </span>
+               </div>
+          </div>
+     </div>
+</section>

@@ -1,0 +1,69 @@
+<div id="login_register" ng-controller='loginCtrl as login' class="container">
+     <div class="row">
+          <div class="col-xs-12 col-md-6" id="login">
+               <div class="row">
+                    <div class="col-xs-12">
+                         <h1> Login </h1>
+                    </div>
+               </div>
+               <div class="row">
+                    <div class="col-xs-12">
+                         <p id='error'> {{login.error}} </p>
+                         <p class="form-group">
+                              <label>Email Id:</label>
+                              <input type="text" ng-model="login.lemail" class="form-control">
+                         </p>
+                         <p class="form-group">
+                              <label>Password</label>
+                              <input type="password" class="form-control" ng-model="login.lpassword" class="form-control">
+                         </p>
+                    </div>
+               </div>
+               <div class="row">
+                    <div class="col-xs-12">
+                         <a href="#" class="btn btn-primary" role="button" ng-click="login.login()">Login</a>
+                    </div>
+               </div>
+          </div>
+          <div class="col-xs-12 col-md-6" id="register">
+               <div class="row">
+                    <div class="col-xs-12">
+                         <h1> Register </h1>
+                    </div>
+               </div>
+               <div class="row">
+                    <div class="col-xs-12">
+                         <p class="form-group">
+                              <label>First Name</label>
+                              <input type="text" ng-model="login.firstName" class="form-control">
+                         </p>
+                         <p class="form-group">
+                              <label>Last Name</label>
+                              <input type="text" ng-model="login.lastName" class="form-control">
+                         </p>
+                         <p class="form-group">
+                              <label>Username</label>
+                              <input type="text" ng-model="login.username" class="form-control">
+                         </p>
+                         <p class="form-group">
+                              <label>Email Id</label>
+                              <input type="text" ng-model="login.email" class="form-control">
+                         </p>
+                         <p class="form-group">
+                              <label>Password</label>
+                              <input type="password" class="form-control" ng-model="login.password" class="form-control">
+                         </p>
+                         <p class="form-group">
+                              <label>Confirm Password</label>
+                              <input type="password" class="form-control" ng-model="login.confirmpassword" class="form-control">
+                         </p>
+                    </div>
+               </div>
+               <div class="row">
+                    <div class="col-xs-12">
+                         <a href="#" class="btn btn-primary" role="button" ng-click="login.register()">Register!</a>
+                    </div>
+               </div>
+          </div>
+     </div>
+</div>

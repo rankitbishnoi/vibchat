@@ -1,0 +1,18 @@
+#recievingUser {
+     height : 8vh;
+}
+
+#messages {
+     height: calc(100% - 16vh);
+     overflow-y: auto;
+}
+
+#sendbtn {
+     bottom: 0;
+     width: 100%;
+}
+
+#recievingUserPic {
+     height: 10vw;
+     width: 10vw;
+}
