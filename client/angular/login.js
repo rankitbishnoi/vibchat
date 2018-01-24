@@ -30,7 +30,7 @@ myapp.controller('loginCtrl', ['$http','$state',  function ($http, $state) {
           };
      };
 
-     self.register = function () {console.log('register');
+     self.register = function () {
           if (self.email === 'email' || self.password === 'password' || self.firstName === 'firstName' || self.lastName === 'lastName' || self.username === 'username'){
                self.error = 'Please enter valid Email id and password.';
           }else if (self.password != self.confirmpassword) {

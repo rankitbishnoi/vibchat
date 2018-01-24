@@ -9,23 +9,24 @@ module.exports.controller = (server) => {
      var responseGenerator = require('./../libs/responseGenerator');
 
      const checkChat = (room) => {
-          chatModel.find({chat : { $all : room.subscribers}}, (err, messages)=> {
+          chatModel.find({user : { $all : room.subscribers}}, (err, messages)=> {
                if(err){
 
                     var myResponse = responseGenerator.generate(true,"Sorry for inconvinience. Couldn't complete the action. Please try After some time."+err,500,null);
-                    res.json(myResponse);
+                    console.log(myResponse);
                }
                return messages;
                if (messages === undefined && messages === null){
                     var newChat = new chatModel({
-                         user : room.subscribers
+                         user : room.subscribers,
+                         chat : []
                     });// end new chat
 
                     newChat.save((err) =>{
                          if(err){
 
-                              var myResponse = responseGenerator.generate(true,"Sorry for inconvinience. Couldn't complete the action. Please try After some time."+err,500,null);
-                              res.json(myResponse)
+                              var myResponse = responseGenerator.generate(true,"Sorry, for inconvinience. Couldn't complete the action. Please try After some time."+err,500,null);
+                              console.log(myResponse);
                          }
                     });//end new chat save
                }
@@ -33,16 +34,11 @@ module.exports.controller = (server) => {
      };
 
      const saveChat = (msg, reciever, sender) => {
-          var obj = {
-               msg: msg,
-               sentOn: Date.now(),
-               sentBy: sender.firstname + " " + sender.lastname
-          };
-          chatModel.findOneAndUpdate({chat : { $all : [reciever, sender._id]}}, { $push: {chat: obj}}, (err) => {
+          chatModel.findOneAndUpdate({user : { $all : [reciever, sender._id]}}, { $push: {chat: msg}}, {new: true}, (err, chat) => {
                if(err){
 
-                    var myResponse = responseGenerator.generate(true,"Sorry for inconvinience. Couldn't complete the action. Please try After some time."+err,500,null);
-                    res.json(myResponse);
+                    var myResponse = responseGenerator.generate(true,"Sorry for inconvinience. Couldnt complete the action. Please try After some time."+err,500,null);
+                    console.log(myResponse);
                }
           });
      };
@@ -79,8 +75,10 @@ module.exports.controller = (server) => {
           socket.on('add user', (profile) => {
                var i = 0;
                users.forEach((user)=> {
-                    if (user === profile) {
-                         i++;
+                    if (user != undefined || user != null) {
+                         if (user._id === profile._id) {
+                              i++;
+                         }
                     }
                });
                if (i === 0) { users.push(profile);}
@@ -91,14 +89,19 @@ module.exports.controller = (server) => {
                rooms.push(room);
           });
 
-          socket.on('cheak for previous chat', (room) =>{
+          socket.on('check for previous chat', (room) =>{
                var messages = checkChat(room);
                io.sockets.in(room.name).emit('previous chat', room.otheruserid, messages);
           });
 
-          socket.on('send msg', (msg, room, user) => {
-               var message = saveChat(msg, room.otheruserid, user);
-               io.sockets.in(room.name).emit('recieve msg', message, user);
+          socket.on('send msg', (data) => {
+               var message = {
+                    msg: data.msg,
+                    sentOn: Date.now(),
+                    sentBy: data.user.firstname + " " + data.user.lastname
+               };
+               saveChat(message, data.room.otheruserid, data.user);
+               io.sockets.in(data.room.name).emit('recieve msg', message, data.user);
           });
 
           socket.on('user started typing', (userid) => {

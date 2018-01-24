@@ -18,7 +18,7 @@
           <div id='chatbox' class="col-md-9">
                <div id='recievingUser'>
                     <a class="thumbnail">
-                         <img ng-src='{{chat.recievingUser.image}}' alt="" id='recievingUserPic'>
+                         <!--<img ng-src='{{chat.recievingUser.image}}' alt="" id='recievingUserPic'>--->
                          <span> {{chat.recievingUser.name}}</span>
                          <span class="badge" ng-show="chat.recievingUser.status">Online</span>
                          <span class="badge" ng-hide="chat.recievingUser.status">Offline</span>
@@ -41,7 +41,7 @@
                     </div>
                </div>
                <div class="input-group " id="sendbtn">
-                    <input id="data" type="text" class="form-control" ng-model="chat.msg" ng-change="chat.typing()">
+                    <input id="data" type="text" class="form-control" ng-model="chat.msg" ng-change="chat.typing()" placeholder="Type your message here">
                     <span class="input-group-btn">
                          <button class="btn btn-primary" id="datasend" type="button" ng-click="chat.sendmsg()">Send!</button>
                     </span>

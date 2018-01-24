@@ -1,4 +1,4 @@
-myapp.controller('chatCtrl', ['user','$state','socket', function(user, $state, socket) {
+myapp.controller('chatCtrl', ['user','$state','socket','$timeout', function(user, $state, socket, $timeout) {
 
      var self = this;
      var profile;
@@ -6,7 +6,7 @@ myapp.controller('chatCtrl', ['user','$state','socket', function(user, $state, s
      self.recievingUser = { name: 'Vibchat', image: 'http://dummyimage.com/250x250/000/fff&text=V', status: true};
      self.chatbox = [];
      self.chatroom;
-     self.msg = "Type your message here";
+     self.msg = "";
      user.then((data) =>{
           profile = data;
           if (profile === undefined || profile === null) {
@@ -29,20 +29,22 @@ myapp.controller('chatCtrl', ['user','$state','socket', function(user, $state, s
      };
 
      socket.on('new user online', (userid, room) => {
-          if (userid === profile._id) {
+          if (userid === profile._id && room.otheruserid != profile._id) {
                room.msgcount = 0;
                room.status = true;
                room.typing = false;
 
                var i = 0;
                self.users.forEach((user)=> {
-                    if (user === room) {
-                         i++;
+                    if (user != undefined || user != null) {
+                         if (user.otheruserid === room.otheruserid) {
+                              i++;
+                         }
                     }
                });
                if (i === 0) { self.users.push(room);}
+               self.joinroom(room);
           };
-          self.joinroom(room);
      });
 
      self.joinroom = (room) => {
@@ -56,7 +58,7 @@ myapp.controller('chatCtrl', ['user','$state','socket', function(user, $state, s
           self.checkForPreviousChat(room);
           self.chatroom = room;
 
-          var i;
+          var i = -1;
           self.users.forEach((user,index) => {
                if(user.otheruserid === room.otheruserid) {
                     i = index;
@@ -72,7 +74,7 @@ myapp.controller('chatCtrl', ['user','$state','socket', function(user, $state, s
 
      socket.on('previous chat', (otheruserid, messages) => {
           self.chatbox = [];
-          if(profile._id != otheruserid && messages[0] != null && messages[0] != undefined) {
+          if(profile._id != otheruserid && messages != null && messages != undefined) {
                messages[0].chat.forEach((msg)=> {
                     self.chatbox.push(msg);
                });
@@ -80,8 +82,15 @@ myapp.controller('chatCtrl', ['user','$state','socket', function(user, $state, s
      });
 
      self.sendmsg = () => {
+          var data = { msg : self.msg, room: self.chatroom, user: profile};
           if (self.msg != null && self.msg != undefined){
-               socket.emit('send msg', self.msg, self.room, profile);
+               socket.emit('send msg', data);
+               var message = {
+                    msg: self.msg,
+                    sentOn: Date.now(),
+                    sentBy: data.user.firstname + " " + data.user.lastname
+               };
+               self.chatbox.push(message);
           }
           self.msg = "";
      };
@@ -89,7 +98,7 @@ myapp.controller('chatCtrl', ['user','$state','socket', function(user, $state, s
      socket.on('recieve msg', (msg, sentBy) =>{
           var name = sentBy.firstname + " " + sentBy.lastname;
           if (self.recievingUser.name != name) {
-               var i;
+               var i = -1;
                self.users.forEach((user,index) => {
                     if(user.otheruserid === sentBy._id) {
                          i = index;
@@ -117,17 +126,17 @@ myapp.controller('chatCtrl', ['user','$state','socket', function(user, $state, s
      }
 
      socket.on('user is typing', (userid) => {
-          var i;
+          var i = -1;
           self.users.forEach((user,index) => {
                if(user.otheruserid === userid) {
-                    i = index;
+                    i = index;console.log(user);
                }
           });
           if (i != -1) { self.users[i].typing = true;}
      });
 
      socket.on('user stopped', (userid) => {
-          var i;
+          var i = -1;
           self.users.forEach((user,index) => {
                if(user.otheruserid === userid) {
                     i = index;
@@ -137,7 +146,7 @@ myapp.controller('chatCtrl', ['user','$state','socket', function(user, $state, s
      });
 
      socket.on('user offline', (list) => {
-          var offlineroom, i;
+          var offlineroom, i = -1;
           list.forEach((room) => {
                if(room.otheruserid === profile._id) {
                     offlineroom = room.name;

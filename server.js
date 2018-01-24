@@ -30,12 +30,12 @@ app.use(session({
 var mongoose = require('mongoose');
 mongoose.Promise = require('bluebird');
 
-mongoose.connect("mongodb://localhost/vibchat",{
+mongoose.connect("mongodb://localhost/vibchatapp",{
   useMongoClient: true,
 });
 
 mongoose.connection.on('connected', () => {
-     console.log('Mongoose connected to mongodb://localhost/vibchat');
+     console.log('Mongoose connected to mongodb://localhost/vibchatapp');
 });
 
 mongoose.connection.on('error',(err) => {
