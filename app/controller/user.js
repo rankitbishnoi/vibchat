@@ -73,5 +73,9 @@ module.exports.controller = (app) => {
           }
      });
 
+     userRouter.get('/logout', (req, res) => {
+          req.session.user = ' ';
+     });
+
      app.use('/server', userRouter);
 }

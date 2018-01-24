@@ -166,6 +166,10 @@ myapp.controller('chatCtrl', ['user','$state','socket','$timeout', function(user
                self.recievingUser.status = false;
           }
      });
+
+     self.logout = ()=>{
+          $state.go('login');
+     };
 }]);
 
 /* Services */

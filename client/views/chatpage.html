@@ -5,7 +5,8 @@
                     <a class="thumbnail">
                          <img ng-src='{{chat.profileImage}}' alt="" id='profilePic'>
                     </a>
-                    <h2 id="profilename">{{chat.profileName}}</h2>
+                    <h2 id="profilename">{{chat.profileName}}</h2><br>
+                    <p ng-click="chat.logout()"><a>Logout</a></p>
                </div>
                <ul class="list-group" id="onlineUsers" ng-repeat="user in chat.users">
                     <li class="list-group-item" ng-click="chat.chatinroom(user)">

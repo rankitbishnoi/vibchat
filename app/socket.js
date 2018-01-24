@@ -9,14 +9,15 @@ module.exports.controller = (server) => {
      var responseGenerator = require('./../libs/responseGenerator');
 
      const checkChat = (room) => {
+          var msgs;
           chatModel.find({user : { $all : room.subscribers}}, (err, messages)=> {
                if(err){
 
                     var myResponse = responseGenerator.generate(true,"Sorry for inconvinience. Couldn't complete the action. Please try After some time."+err,500,null);
                     console.log(myResponse);
                }
-               return messages;
-               if (messages === undefined && messages === null){
+               msgs = messages;
+               if (msgs[0] === undefined && msgs[0] === null){
                     var newChat = new chatModel({
                          user : room.subscribers,
                          chat : []
@@ -31,6 +32,9 @@ module.exports.controller = (server) => {
                     });//end new chat save
                }
           });
+
+
+          return msgs;
      };
 
      const saveChat = (msg, reciever, sender) => {
@@ -40,6 +44,7 @@ module.exports.controller = (server) => {
                     var myResponse = responseGenerator.generate(true,"Sorry for inconvinience. Couldnt complete the action. Please try After some time."+err,500,null);
                     console.log(myResponse);
                }
+               console.log(chat);
           });
      };
 
