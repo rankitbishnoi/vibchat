@@ -7,10 +7,10 @@ var responseGenerator = require('./../../libs/responseGenerator');
 
 module.exports.controller = (app) => {
 
-     userRouter.get('/getchat', (req, res) => {console.log(a);
+     userRouter.get('/getchat', (req, res) => {console.log('a');
           var user1 = req.query.user1;
           var user2 = req.query.user2;
-          chatModel.find({user : { $all : [user1, user2]}}, (err, messages)=> {console.log(b);
+          chatModel.find({user : { $all : [user1, user2]}}, (err, messages)=> {console.log('b');
                if(err){
 
                     var myResponse = responseGenerator.generate(true,"Sorry for inconvinience. Couldn't complete the action. Please try After some time."+err,500,null);
@@ -19,9 +19,9 @@ module.exports.controller = (app) => {
                var myResponse = responseGenerator.generate(false,"request success",123,messages);
                res.json(myResponse);
 
-               if (messages[0] === undefined && messages[0] === null){console.log(c);
+               if (messages[0] === undefined || messages[0] === null){console.log('c');
                     var newChat = new chatModel({
-                         user : room.subscribers,
+                         user : [user1, user2],
                          chat : []
                     });// end new chat
 

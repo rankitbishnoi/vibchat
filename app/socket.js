@@ -81,5 +81,9 @@ module.exports.controller = (server) => {
                rooms.splice(i, 1);
 
           });
+          
+          socket.on('forceDisconnect', function(){
+               socket.disconnect();
+          });
      });
 }

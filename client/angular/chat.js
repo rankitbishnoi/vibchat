@@ -165,6 +165,7 @@ myapp.controller('chatCtrl', ['user','chat','$state','socket','$timeout', functi
      });
 
      self.logout = ()=>{
+          socket.emit('forceDisconnect');
           $state.go('login');
      };
 }]);
