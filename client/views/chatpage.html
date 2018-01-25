@@ -1,6 +1,6 @@
 <section ng-controller = 'chatCtrl as chat' class="container">
      <div class='row'>
-          <div id='users' class="col-md-3">
+          <div id='users' class="col-md-3" ng-class='main.usertab'>
                <div id='profile'>
                     <a class="thumbnail">
                          <img ng-src='{{chat.profileImage}}' alt="" id='profilePic'>
@@ -9,14 +9,14 @@
                     <p ng-click="chat.logout()"><a>Logout</a></p>
                </div>
                <ul class="list-group" id="onlineUsers" ng-repeat="user in chat.users">
-                    <li class="list-group-item" ng-click="chat.chatinroom(user)">
+                    <li class="list-group-item" ng-click="chat.chatinroom(user); main.changeclass('chat')">
                          <span class="badge" ng-if="user.msgcount > 0">{{user.msgcount}}</span>
                          {{user.otheruser}}<br>
                          <p ng-show="user.typing">The user is typing....</p>
                     </li>
                </ul>
           </div>
-          <div id='chatbox' class="col-md-9">
+          <div id='chatbox' class="col-md-9" ng-class = 'main.chattab'>
                <div id='recievingUser'>
                     <a class="thumbnail">
                          <!--<img ng-src='{{chat.recievingUser.image}}' alt="" id='recievingUserPic'>--->
@@ -28,12 +28,9 @@
                <div id="messages">
                     <div ng-repeat="msg in chat.chatbox" class="col-sm-12 ng-scope">
                          <div class="row" ng-if="msg">
-                              <div class="col-xs-1">
-                                   <h6>:--</h4>
-                              </div>
-                              <div class="col-xs-11">
-                                   <div class="panel panel-default ">
-                                        <div class="panel-body ng-binding "> <strong>{{msg.sentBy}}</strong> : {{msg.msg}} <br>
+                              <div class="col-xs-12">
+                                   <div>
+                                        <div class="panel-body ng-binding" ng-class="chat.chatpull(chat.recievingUser.name,msg.sentBy)" id="chatmsg"> <strong>{{msg.sentBy}} :</strong> <p id="cmsg"> {{msg.msg}}</p> <br>
                                              <span class="label label-info ng-binding ">{{msg.sentOn | date: 'h:mma'}}</span>
                                         </div>
                                    </div>

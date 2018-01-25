@@ -107,6 +107,14 @@ myapp.controller('chatCtrl', ['user','chat','$state','socket','$timeout', functi
           }
      });
 
+     self.chatpull = (reciever, sender) => {
+          if(reciever === sender) {
+               return "pull-left";
+          }else {
+               return "pull-right";
+          }
+     }
+
 
      var inputChangedPromise;
      var typingIndex;

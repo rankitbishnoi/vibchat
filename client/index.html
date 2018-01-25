@@ -10,9 +10,29 @@
      <link rel="stylesheet" type="text/css" href="./styles/main.css">
 
 </head>
-<body>
+<body ng-controller ='mainCtrl as main'>
+
+     <nav class="navbar navbar-default" id="nav">
+          <div class="container-fluid">
+               <div class="navbar-header">
+                    <a class="navbar-brand" ng-click="main.changeclass('user')">
+                         <img alt="Brand" src="./styles/images/vc.jpg" id="navimage">
+                    </a>
+                    <a class="navbar-brand" id="navbrand">VibChat</a>
+               </div>
+          </div>
+     </nav>
+
+
      <div ui-view> </div>
 
+
+     <!-- Footer -->
+    <footer>
+      <div class="container-fluid" id="footer">
+        <p class="copyright text-muted small">Copyright &copy; Rankit.tech 2018. All Rights Reserved</p>
+      </div>
+    </footer>
 
 
 
@@ -28,6 +48,7 @@
      <script type="text/javascript " src="./angular/userservice.js "></script>
      <script type="text/javascript " src="./angular/chatservice.js "></script>
 
+     <script type="text/javascript " src="./angular/main.js "></script>
      <script type="text/javascript " src="./angular/login.js "></script>
      <script type="text/javascript " src="./angular/chat.js "></script>
 
