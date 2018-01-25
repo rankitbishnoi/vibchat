@@ -8,4 +8,4 @@ var chatSchema = new mongoose.Schema({
      chat      : [{msg : String, sentOn: Date, sentBy: String }]
 });
 // Build the User model
-mongoose.model( 'Chat', chatSchema );
+module.exports = mongoose.model( 'Chat', chatSchema );
