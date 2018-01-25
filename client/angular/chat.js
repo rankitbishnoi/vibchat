@@ -1,4 +1,4 @@
-myapp.controller('chatCtrl', ['user','$state','socket','$timeout', function(user, $state, socket, $timeout) {
+myapp.controller('chatCtrl', ['user','chat','$state','socket','$timeout', function(user, chat, $state, socket, $timeout) {
 
      var self = this;
      var profile;
@@ -69,17 +69,13 @@ myapp.controller('chatCtrl', ['user','$state','socket','$timeout', function(user
      };
 
      self.checkForPreviousChat = (room) =>{
-          socket.emit('check for previous chat', room);
-     };
-
-     socket.on('previous chat', (otheruserid, messages) => {
           self.chatbox = [];
-          if(profile._id != otheruserid && messages != null && messages != undefined) {
-               messages[0].chat.forEach((msg)=> {
-                    self.chatbox.push(msg);
-               });
-          };
-     });
+          chat.getChat(room, (messages) => {
+               if (messages[0] != undefined && messages[0] != null) {
+                    self.chatbox = messages[0].chat;
+               }
+          });
+     };
 
      self.sendmsg = () => {
           var data = { msg : self.msg, room: self.chatroom, user: profile};
@@ -90,7 +86,8 @@ myapp.controller('chatCtrl', ['user','$state','socket','$timeout', function(user
                     sentOn: Date.now(),
                     sentBy: data.user.firstname + " " + data.user.lastname
                };
-               self.chatbox.push(message);
+               self.chatbox.push(message);console.log(1);
+               chat.saveChat(message, data.room.otheruserid, data.user._id);
           }
           self.msg = "";
      };

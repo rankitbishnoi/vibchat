@@ -2,53 +2,6 @@ module.exports.controller = (server) => {
 
      var io = require('socket.io').listen(server);
      //=====================================
-     const mongoose = require('mongoose');
-     mongoose.Promise = require('bluebird');
-     const chatModel = mongoose.model('Chat');
-
-     var responseGenerator = require('./../libs/responseGenerator');
-
-     const checkChat = (room) => {
-          var msgs;
-          chatModel.find({user : { $all : room.subscribers}}, (err, messages)=> {
-               if(err){
-
-                    var myResponse = responseGenerator.generate(true,"Sorry for inconvinience. Couldn't complete the action. Please try After some time."+err,500,null);
-                    console.log(myResponse);
-               }
-               msgs = messages;
-               if (msgs[0] === undefined && msgs[0] === null){
-                    var newChat = new chatModel({
-                         user : room.subscribers,
-                         chat : []
-                    });// end new chat
-
-                    newChat.save((err) =>{
-                         if(err){
-
-                              var myResponse = responseGenerator.generate(true,"Sorry, for inconvinience. Couldn't complete the action. Please try After some time."+err,500,null);
-                              console.log(myResponse);
-                         }
-                    });//end new chat save
-               }
-          });
-
-
-          return msgs;
-     };
-
-     const saveChat = (msg, reciever, sender) => {
-          chatModel.findOneAndUpdate({user : { $all : [reciever, sender._id]}}, { $push: {chat: msg}}, {new: true}, (err, chat) => {
-               if(err){
-
-                    var myResponse = responseGenerator.generate(true,"Sorry for inconvinience. Couldnt complete the action. Please try After some time."+err,500,null);
-                    console.log(myResponse);
-               }
-               console.log(chat);
-          });
-     };
-
-     //=====================================
      var users = [];
 
      //=====================================
@@ -94,18 +47,12 @@ module.exports.controller = (server) => {
                rooms.push(room);
           });
 
-          socket.on('check for previous chat', (room) =>{
-               var messages = checkChat(room);
-               io.sockets.in(room.name).emit('previous chat', room.otheruserid, messages);
-          });
-
           socket.on('send msg', (data) => {
                var message = {
                     msg: data.msg,
                     sentOn: Date.now(),
                     sentBy: data.user.firstname + " " + data.user.lastname
                };
-               saveChat(message, data.room.otheruserid, data.user);
                io.sockets.in(data.room.name).emit('recieve msg', message, data.user);
           });
 

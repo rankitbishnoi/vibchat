@@ -74,8 +74,10 @@ fs.readdirSync('./app/model').forEach( (file) => {
      }
 });
 
-const route = require('./app/controller/user.js');
-route.controller(app);
+const userRoute = require('./app/controller/user.js');
+userRoute.controller(app);
+const chatRoute = require('./app/controller/chatmsg.js');
+chatRoute.controller(app);
 
 const socketInstance = require('./app/socket.js');
 socketInstance.controller(server);
