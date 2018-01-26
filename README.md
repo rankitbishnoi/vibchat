@@ -26,7 +26,7 @@ Getting up and running is as easy as 1, 2, 3.
     npm start
     ```
 
-4. Goto to browser and go to [localhost:3000/vanilla](http://localhost:3000/)
+4. Goto to browser and go to [localhost:3000](http://localhost:3000/)
 
 
 ## Help
