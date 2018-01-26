@@ -4,6 +4,9 @@ It is One-to-one chatting web app.
 
 > A Vibchat real-time chat application
 
+To use it and get a firsthand experiense as client-side user Visit [Vibchat](ec2-18-216-222-125.us-east-2.compute.amazonaws.com)
+
+
 ## About
 
 This project uses the whole MEAN js enviornment. The fontend is built with Angularjs 1.6.1 and the backend is built with Express, Node and Mongodb is used for database. For making it real-time communicative Socket.io is used.
