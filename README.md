@@ -4,7 +4,7 @@ It is One-to-one chatting web app.
 
 > A Vibchat real-time chat application
 
-To use it and get a firsthand experiense as client-side user Visit [Vibchat](ec2-18-216-222-125.us-east-2.compute.amazonaws.com)
+To use it and get a firsthand experiense as client-side user Visit [Vibchat](http://ec2-18-216-222-125.us-east-2.compute.amazonaws.com)
 
 
 ## About
