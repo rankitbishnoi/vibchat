@@ -39,3 +39,7 @@
 #chatmsg {
      background-color: #F5F4F9;
 }
+
+#error {
+     color: red;
+}
